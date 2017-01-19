@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "com_hank_learnjni_LearnJni.h"
 #ifdef __cplusplus
@@ -193,7 +194,50 @@ extern "C"
         return (*env)->NewStringUTF(env,c_str);
     }
 
+    int compare(const void* a,const void* b){
+        return (*(int*)a)-(*(int*)b);
+    }
     
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    getArray
+     * Signature: ([I)V
+     */
+    JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_giveArray
+    (JNIEnv *env, jobject jobj, jintArray jintarray){
+        //拿到指针
+       jint *p_array=(*env)->GetIntArrayElements(env,jintarray,JNI_FALSE);
+        // 取长度
+        int len=(*env)->GetArrayLength(env,jintarray);
+        //排序
+        qsort(p_array,len,sizeof(jint),compare);
+        //释放同步
+        //第四个参数:0,java数组进行更新，并且释放c/c++数组
+        //JNI_ABORT,java数组不进行更新，释放c/c++代码
+        //JNI_COMMIT,java数组进行更新，不释放c/c++代码(函数执行完，才会被释放)
+        (*env)->ReleaseIntArrayElements(env,jintarray,p_array,0);
+    }
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    getArray
+     * Signature: ()[I
+     * 返回数组
+     */
+    JNIEXPORT jintArray JNICALL Java_com_hank_learnjni_LearnJni_getArray
+    (JNIEnv *env, jobject jobj,jint len){
+        jintArray jarray=(*env)->NewIntArray(env,len);
+        jint *p=(*env)->GetIntArrayElements(env,jarray,NULL);
+        int i=0;
+        for (; i<len; i++) {
+            p[i]=i;
+        }
+        //同步
+        (*env)->ReleaseIntArrayElements(env,jarray,p,0);
+        
+        return jarray;
+    }
+
+
     int main()
     {
         return 0;

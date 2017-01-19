@@ -87,6 +87,22 @@ JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_accessNonvirtualMethod
 JNIEXPORT jstring JNICALL Java_com_hank_learnjni_LearnJni_chineseChars
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    giveArray
+ * Signature: ([I)V
+ */
+JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_giveArray
+  (JNIEnv *, jobject, jintArray);
+
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    getArray
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_hank_learnjni_LearnJni_getArray
+  (JNIEnv *, jobject,jint len);
+
 #ifdef __cplusplus
 }
 #endif
