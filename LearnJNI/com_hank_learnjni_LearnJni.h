@@ -98,10 +98,42 @@ JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_giveArray
 /*
  * Class:     com_hank_learnjni_LearnJni
  * Method:    getArray
- * Signature: ()[I
+ * Signature: (I)[I
  */
 JNIEXPORT jintArray JNICALL Java_com_hank_learnjni_LearnJni_getArray
-  (JNIEnv *, jobject,jint len);
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    localDef
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_localDef
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    createGlobalRef
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_createGlobalRef
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    getGlobalRef
+ * Signature: ()V
+ */
+JNIEXPORT jstring JNICALL Java_com_hank_learnjni_LearnJni_getGlobalRef
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_hank_learnjni_LearnJni
+ * Method:    deleteGlobalRef
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_deleteGlobalRef
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

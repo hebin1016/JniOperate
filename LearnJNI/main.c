@@ -237,6 +237,75 @@ extern "C"
         return jarray;
     }
 
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    localDef
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_localDef
+    (JNIEnv *env, jobject jobj){
+        jclass date_class=(*env)->FindClass(env,"java/util/Date");
+        jmethodID date_mid=(*env)->GetMethodID(env,date_class,"<init>","()V");
+        jobject date_obj=(*env)->NewObject(env,date_class,date_mid);
+        
+        //不再使用date_obj对象了
+        //通知垃圾回收器回收这些对象
+        (*env)->DeleteLocalRef(env,date_obj);
+    }
+    
+    
+    jstring global_name;
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    createGlobalRef
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_createGlobalRef
+    (JNIEnv *env, jobject jobj){
+        jstring name=(*env)->NewStringUTF(env,"hank.he");
+        global_name=(*env)->NewGlobalRef(env,name);
+    }
+    
+    
+    
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    getGlobalRef
+     * Signature: ()V
+     */
+    JNIEXPORT jstring JNICALL Java_com_hank_learnjni_LearnJni_getGlobalRef
+    (JNIEnv *env, jobject jobj){
+        return global_name;
+    }
+    
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    deleteGlobalRef
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_deleteGlobalRef
+    (JNIEnv *env, jobject jobj){
+        (*env)->DeleteGlobalRef(env,global_name);
+    }
+    
+    /*
+     * Class:     com_hank_learnjni_LearnJni
+     * Method:    exception
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_com_hank_learnjni_LearnJni_exception
+    (JNIEnv *env, jobject jobj){
+        jclass jcs=(*env)->GetObjectClass(env,jobj);
+        jfieldID name_fid=(*env)->GetFieldID(env,jcs,"name1","Ljava/lang/String;");
+        jthrowable ex=(*env)->ExceptionOccurred(env);
+        if(0!=ex){
+            (*env)->ExceptionClear(env);
+            name_fid=(*env)->GetFieldID(env,jcs,"name","Ljava/lang/String;");
+        }
+        jstring name_str=(*env)->GetObjectField(env,jobj,name_fid);
+        const char *c_str=(*env)->GetStringUTFChars(env,name_str,JNI_FALSE);
+        printf("name:%s",c_str);
+    }
 
     int main()
     {
